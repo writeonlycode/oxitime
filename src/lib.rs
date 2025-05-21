@@ -18,18 +18,6 @@ pub enum Commands {
     /// Start a long break after several sessions
     LongBreak,
 
-    /// Pause the current timer
-    Pause,
-
-    /// Resume the current timer
-    Resume,
-
-    /// Stop and reset the current session
-    Stop,
-
-    /// Show the current timer status
-    Status,
-
     /// View the history of completed sessions
     Log,
 }
