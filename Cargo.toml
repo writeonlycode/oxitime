@@ -5,5 +5,6 @@ edition = "2021"
 description = "Oxitime is a fast, minimal, and terminal-native Pomodoro time tracker built with the Rust programming language."
 
 [dependencies]
+anyhow = "1.0.98"
 clap = { version = "4.5.38", features = ["derive"] }
 crossterm = "0.29.0"
