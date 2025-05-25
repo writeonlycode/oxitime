@@ -31,9 +31,8 @@ Then run it from target/release/oxitime.
 
 ```bash
 oxitime start        # Start a Pomodoro session
-oxitime break        # Start a short break
+oxitime short-break        # Start a short break
 oxitime long-break   # Start a long break
-oxitime status       # View current session status
 oxitime log          # View session history
 ```
 
@@ -65,3 +64,7 @@ Pull requests are welcome! If you find a bug or want a new feature, open an issu
 ## License
 
 MIT License © Iago Bozza
+
+## Thanks
+
+- Alarm Sound Effect by <a href="https://pixabay.com/users/u_inx5oo5fv3-49729779/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=327234">u_inx5oo5fv3</a> from <a href="https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=327234">Pixabay</a>.

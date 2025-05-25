@@ -19,16 +19,16 @@ mod timer;
 #[command(version, about)]
 pub struct Config {
     #[command(subcommand)]
-    pub command: Commands,
+    pub command: TimerCommand,
 }
 
 #[derive(Subcommand, Debug)]
-pub enum Commands {
+pub enum TimerCommand {
     /// Start a new Pomodoro work session
     Start,
 
     /// Start a short break
-    Break,
+    ShortBreak,
 
     /// Start a long break after several sessions
     LongBreak,
@@ -41,7 +41,7 @@ pub fn run(config: Config) -> Result<()> {
     let (tx, rx) = mpsc::channel::<TimerMessage>();
 
     match config.command {
-        Commands::Start => {
+        TimerCommand::Start => {
             let mut timer = Timer::new(Duration::from_secs(3), rx);
 
             thread::spawn(move || {
@@ -50,7 +50,7 @@ pub fn run(config: Config) -> Result<()> {
 
             let _ = tx.send(TimerMessage::Start);
         }
-        Commands::Break => {
+        TimerCommand::ShortBreak => {
             let mut timer = Timer::new(Duration::from_secs(300), rx);
 
             thread::spawn(move || {
@@ -59,7 +59,7 @@ pub fn run(config: Config) -> Result<()> {
 
             let _ = tx.send(TimerMessage::Start);
         }
-        Commands::LongBreak => {
+        TimerCommand::LongBreak => {
             let mut timer = Timer::new(Duration::from_secs(900), rx);
 
             thread::spawn(move || {
@@ -68,7 +68,7 @@ pub fn run(config: Config) -> Result<()> {
 
             let _ = tx.send(TimerMessage::Start);
         }
-        Commands::Log => {
+        TimerCommand::Log => {
             todo!("Log!")
         }
     }
