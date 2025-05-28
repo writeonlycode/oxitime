@@ -4,8 +4,12 @@ use std::{
     time::{Duration, Instant},
 };
 
+use notify_rust::{Notification, Timeout};
+use rodio::queue::queue;
 use timer_alarm::TimerAlarm;
 use timer_display::{DisplayPosition, TimerDisplay};
+
+use crate::sync;
 
 mod timer_alarm;
 mod timer_display;
@@ -70,6 +74,17 @@ impl Timer {
     }
 
     pub fn finish(&mut self) {
+        // Sync with external services
+        //sync::sync().unwrap();
+
+        //Notification
+        Notification::new()
+            .summary("Pomodoro up!")
+            .body("The pomodoro has finished!")
+            .timeout(Timeout::Milliseconds(6000))
+            .show()
+            .unwrap();
+
         if let TimerState::Running = self.state {
             self.state = TimerState::Finished;
         }

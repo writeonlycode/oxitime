@@ -13,6 +13,7 @@ use std::{
 };
 use timer::{Timer, TimerMessage};
 
+mod sync;
 mod timer;
 
 #[derive(Parser, Debug)]

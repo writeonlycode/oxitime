@@ -1,11 +1,13 @@
 use anyhow::Result;
 use rodio::{Decoder, OutputStream, Sink};
-use std::{fs::File, io::BufReader};
+use std::io::BufReader;
 
 pub struct TimerAlarm {}
 
 impl TimerAlarm {
     pub fn play() -> Result<()> {
+        let alarm = include_bytes!("../../assets/alarm.mp3");
+
         // Set up audio output
         let (_stream, stream_handle) = OutputStream::try_default()?;
 
@@ -13,7 +15,7 @@ impl TimerAlarm {
         let sink = Sink::try_new(&stream_handle)?;
 
         // Open the WAV file
-        let file = File::open("alarm.mp3")?;
+        let file = std::io::Cursor::new(alarm);
         let reader = BufReader::new(file);
 
         // Decode the WAV file
