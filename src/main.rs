@@ -1,10 +1,12 @@
 use clap::Parser;
-use oxitime::{run, Config};
+use oxitime::{run, Args, Config, Opts};
 
 fn main() {
-    let config = Config::parse();
+    let args = Args::parse();
+    let config = Config::load();
+    let opts = Opts::build(args, config);
 
-    if let Err(error) = run(config) {
+    if let Err(error) = run(opts) {
         eprintln!("{}", error);
         std::process::exit(0);
     }

@@ -5,7 +5,6 @@ use std::{
 };
 
 use notify_rust::{Notification, Timeout};
-use rodio::queue::queue;
 use timer_alarm::TimerAlarm;
 use timer_display::{DisplayPosition, TimerDisplay};
 
@@ -15,11 +14,18 @@ mod timer_alarm;
 mod timer_display;
 
 pub struct Timer {
+    kind: TimerKind,
     duration: Duration,
     start_time: Option<Instant>,
     elapsed_time: Duration,
     receiver: Receiver<TimerMessage>,
     state: TimerState,
+}
+
+pub enum TimerKind {
+    Pomodoro,
+    ShortBreak,
+    LongBreak,
 }
 
 pub enum TimerMessage {
@@ -36,8 +42,9 @@ enum TimerState {
 }
 
 impl Timer {
-    pub fn new(duration: Duration, receiver: Receiver<TimerMessage>) -> Timer {
+    pub fn new(kind: TimerKind, duration: Duration, receiver: Receiver<TimerMessage>) -> Timer {
         Timer {
+            kind,
             duration,
             start_time: None,
             elapsed_time: Duration::ZERO,
@@ -78,10 +85,25 @@ impl Timer {
         //sync::sync().unwrap();
 
         //Notification
+        let (title, body) = match self.kind {
+            TimerKind::Pomodoro => (
+                "Pomodoro Session Finished",
+                "You've completed your focus session. Take a short break!",
+            ),
+            TimerKind::ShortBreak => (
+                "Short Break  Finished",
+                "You've completed your short break. Start a new pomodoro!",
+            ),
+            TimerKind::LongBreak => (
+                "Pomodoro Session Finished",
+                "You've completed your long break. Start a new pomodoro!",
+            ),
+        };
+
         Notification::new()
-            .summary("Pomodoro up!")
-            .body("The pomodoro has finished!")
-            .timeout(Timeout::Milliseconds(6000))
+            .summary(title)
+            .body(body)
+            .timeout(Timeout::Milliseconds(10000))
             .show()
             .unwrap();
 

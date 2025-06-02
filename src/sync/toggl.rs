@@ -1,3 +1,3 @@
-pub fn post() -> anyhow::Result<String> {
+pub fn sync() -> anyhow::Result<String> {
     Ok(reqwest::blocking::get("https://google.com")?.json()?)
 }

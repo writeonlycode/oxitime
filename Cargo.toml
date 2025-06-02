@@ -8,6 +8,9 @@ description = "Oxitime is a fast, minimal, and terminal-native Pomodoro time tra
 anyhow = "1.0.98"
 clap = { version = "4.5.38", features = ["derive"] }
 crossterm = "0.29.0"
+dirs = "6.0.0"
 notify-rust = "4.11.7"
 reqwest = { version = "0.12.15", features = ["blocking", "json"] }
 rodio = "0.20.1"
+serde = "1.0.219"
+toml = "0.8.22"
