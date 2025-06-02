@@ -130,11 +130,14 @@ impl Timer {
                 }
             }
 
+            let remaining_time =
+                humantime::format_duration(Duration::from_secs(self.remaining_time().as_secs()));
+
             match self.state {
                 TimerState::Running => {
                     if !self.remaining_time().is_zero() {
                         TimerDisplay::print(DisplayPosition {
-                            center: Some(self.remaining_time().as_secs_f32().ceil().to_string()),
+                            center: Some(remaining_time.to_string()),
                             ..DisplayPosition::default()
                         });
 
@@ -142,7 +145,7 @@ impl Timer {
                         sleep(Duration::from_millis(250));
                     } else {
                         TimerDisplay::print(DisplayPosition {
-                            center: Some(self.remaining_time().as_secs_f32().ceil().to_string()),
+                            center: Some(remaining_time.to_string()),
                             ..DisplayPosition::default()
                         });
                         self.finish();
@@ -150,7 +153,7 @@ impl Timer {
                 }
                 TimerState::Paused => {
                     TimerDisplay::print(DisplayPosition {
-                        center: Some(self.remaining_time().as_secs_f32().ceil().to_string()),
+                        center: Some(remaining_time.to_string()),
                         bottom_middle: Some(
                             "The pomodoro is paused. Press P to resume.".to_string(),
                         ),
@@ -160,7 +163,7 @@ impl Timer {
                 }
                 TimerState::Stopped => {
                     TimerDisplay::print(DisplayPosition {
-                        center: Some(self.remaining_time().as_secs_f64().ceil().to_string()),
+                        center: Some(remaining_time.to_string()),
                         bottom_middle: Some(
                             "The pomodoro has been stopped and reset. Press S to start again."
                                 .to_string(),
@@ -171,7 +174,7 @@ impl Timer {
                 }
                 TimerState::Finished => {
                     TimerDisplay::print(DisplayPosition {
-                        center: Some(self.remaining_time().as_secs_f64().ceil().to_string()),
+                        center: Some(remaining_time.to_string()),
                         bottom_middle: Some(
                             "The pomodoro has finished! Press Q to quit.".to_string(),
                         ),
