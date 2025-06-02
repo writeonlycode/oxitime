@@ -8,8 +8,7 @@ reclaim your time — one oxidized session at a time.
 
 - 🍅 Pomodoro technique (25/5 intervals)
 - ⏱️ Command-line interface (lightning fast)
-- 🔔 Notifications (optional desktop alerts)
-- 📊 Time summaries (see where your focus went)
+- 🔔 Notifications (desktop alerts)
 - ⚙️ Configurable session durations
 - 🦀 Blazingly fast and portable (Rust-powered)
 
@@ -31,9 +30,8 @@ Then run it from target/release/oxitime.
 
 ```bash
 oxitime start        # Start a Pomodoro session
-oxitime short-break        # Start a short break
+oxitime short-break  # Start a short break
 oxitime long-break   # Start a long break
-oxitime log          # View session history
 ```
 
 ## Configuration
@@ -42,20 +40,17 @@ Customize durations and preferences with a simple config file at
 ~/.config/oxitime/config.toml:
 
 ```toml
-[pomodoro]
 work_minutes = 25
 short_break = 5
 long_break = 15
-sessions_before_long_break = 4
 ```
 
 ## Roadmap
 
 - ✅ Basic Pomodoro timer
-- 🔜 Desktop notifications
+- ✅ Desktop notifications
 - 🔜 Session persistence & logs
 - 🔜 Stats and productivity graphs
-- 🔜 TUI mode (text UI)
 
 ## Contributing
 
