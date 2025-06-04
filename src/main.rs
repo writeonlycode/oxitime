@@ -1,12 +1,11 @@
-use clap::Parser;
-use oxitime::{run, Args, Config, Opts};
+use oxitime::run;
 
 fn main() {
-    let args = Args::parse();
-    let config = Config::load();
-    let opts = Opts::build(args, config);
+    // Build configuration from command-line arguments and configuration file. Command-line
+    // arguments take precedence over the configuration file.
+    let config = oxitime::config::Config::load();
 
-    if let Err(error) = run(opts) {
+    if let Err(error) = run(config) {
         eprintln!("{}", error);
         std::process::exit(0);
     }

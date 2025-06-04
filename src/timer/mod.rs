@@ -8,8 +8,6 @@ use notify_rust::{Notification, Timeout};
 use timer_alarm::TimerAlarm;
 use timer_display::{DisplayPosition, TimerDisplay};
 
-use crate::sync;
-
 mod timer_alarm;
 mod timer_display;
 
