@@ -3,6 +3,7 @@ name = "oxitime"
 version = "0.1.0"
 edition = "2021"
 description = "Oxitime is a fast, minimal, and terminal-native Pomodoro time tracker built with the Rust programming language."
+license = "MIT"
 
 [dependencies]
 anyhow = "1.0.98"
