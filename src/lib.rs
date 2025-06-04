@@ -7,18 +7,35 @@ use crossterm::{
     terminal::{disable_raw_mode, enable_raw_mode, Clear},
 };
 use std::{
-    sync::mpsc,
+    sync::mpsc::{self, Sender},
     thread::{self},
 };
 use timer::{Timer, TimerKind, TimerMessage};
 
 pub mod config;
-mod sync;
 mod timer;
 
 pub fn run(config: Config) -> Result<()> {
     let (tx, rx) = mpsc::channel::<TimerMessage>();
 
+    process_command(&config, &tx, rx);
+
+    let _ = enable_raw_mode();
+
+    process_events(tx);
+
+    let _ = execute!(
+        std::io::stdout(),
+        Clear(crossterm::terminal::ClearType::All),
+        MoveTo(0, 0),
+    );
+
+    let _ = disable_raw_mode();
+
+    Ok(())
+}
+
+fn process_command(config: &Config, tx: &Sender<TimerMessage>, rx: mpsc::Receiver<TimerMessage>) {
     match config.command {
         TimerCommand::Start => {
             let mut timer = Timer::new(TimerKind::Pomodoro, config.pomodoro_duration, rx);
@@ -51,9 +68,9 @@ pub fn run(config: Config) -> Result<()> {
             todo!("Log!")
         }
     }
+}
 
-    let _ = enable_raw_mode();
-
+fn process_events(tx: Sender<TimerMessage>) {
     loop {
         match read() {
             Ok(Event::Key(KeyEvent {
@@ -78,14 +95,4 @@ pub fn run(config: Config) -> Result<()> {
             _ => (),
         }
     }
-
-    let _ = execute!(
-        std::io::stdout(),
-        Clear(crossterm::terminal::ClearType::All),
-        MoveTo(0, 0),
-    );
-
-    let _ = disable_raw_mode();
-
-    Ok(())
 }
