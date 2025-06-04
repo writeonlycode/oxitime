@@ -40,9 +40,9 @@ Customize durations and preferences with a simple config file at
 ~/.config/oxitime/config.toml:
 
 ```toml
-work_minutes = 25
-short_break = 5
-long_break = 15
+pomodoro_duration = "30m" 
+short_break_duration = "5m" 
+long_break_duration = "30m" 
 ```
 
 ## Roadmap
