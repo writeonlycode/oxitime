@@ -17,6 +17,12 @@ pub struct ConfigArgs {
 
     #[arg(long, value_parser = ConfigArgs::parse_duration)]
     pub long_break_duration: Option<Duration>,
+
+    #[arg(long)]
+    pub toggl_api_token: Option<String>,
+
+    #[arg(long)]
+    pub toggl_workspace_id: Option<String>,
 }
 
 impl ConfigArgs {

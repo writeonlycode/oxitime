@@ -12,6 +12,8 @@ pub struct Config {
     pub pomodoro_duration: Duration,
     pub short_break_duration: Duration,
     pub long_break_duration: Duration,
+    pub toggl_api_token: Option<String>,
+    pub toggl_workspace_id: Option<String>,
 }
 
 impl Config {
@@ -36,6 +38,8 @@ impl Config {
                     .long_break_duration
                     .unwrap_or(Duration::from_secs(15 * 60)),
             ),
+            toggl_api_token: args.toggl_api_token.or(config.toggl_api_token),
+            toggl_workspace_id: args.toggl_workspace_id.or(config.toggl_workspace_id),
         }
     }
 }

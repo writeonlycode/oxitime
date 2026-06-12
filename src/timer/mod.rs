@@ -4,6 +4,7 @@ use std::{
     time::{Duration, Instant},
 };
 
+use crate::toggl::TogglSyncer;
 use notify_rust::{Notification, Timeout};
 use timer_alarm::TimerAlarm;
 use timer_display::{DisplayPosition, TimerDisplay};
@@ -18,8 +19,10 @@ pub struct Timer {
     elapsed_time: Duration,
     receiver: Receiver<TimerMessage>,
     state: TimerState,
+    syncer: Option<TogglSyncer>,
 }
 
+#[derive(Debug)]
 pub enum TimerKind {
     Pomodoro,
     ShortBreak,
@@ -40,7 +43,12 @@ enum TimerState {
 }
 
 impl Timer {
-    pub fn new(kind: TimerKind, duration: Duration, receiver: Receiver<TimerMessage>) -> Timer {
+    pub fn new(
+        kind: TimerKind,
+        duration: Duration,
+        receiver: Receiver<TimerMessage>,
+        syncer: Option<TogglSyncer>,
+    ) -> Timer {
         Timer {
             kind,
             duration,
@@ -48,6 +56,7 @@ impl Timer {
             elapsed_time: Duration::ZERO,
             receiver,
             state: TimerState::Stopped,
+            syncer,
         }
     }
 
@@ -79,10 +88,18 @@ impl Timer {
     }
 
     pub fn finish(&mut self) {
-        // Sync with external services
-        //sync::sync().unwrap();
+        eprintln!("[oxitime::debug] finish() called — kind: {:?}, syncer present: {}", self.kind, self.syncer.is_some());
+        if let TimerKind::Pomodoro = self.kind {
+            if let Some(syncer) = &self.syncer {
+                eprintln!("[oxitime::debug] syncing pomodoro duration={}s", self.duration.as_secs());
+                if let Err(e) = syncer.sync_pomodoro(self.duration) {
+                    eprintln!("[oxitime::debug] sync error: {e:?}");
+                } else {
+                    eprintln!("[oxitime::debug] sync ok");
+                }
+            }
+        }
 
-        //Notification
         let (title, body) = match self.kind {
             TimerKind::Pomodoro => (
                 "Pomodoro Session Finished",

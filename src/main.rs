@@ -7,6 +7,6 @@ fn main() {
 
     if let Err(error) = run(config) {
         eprintln!("{}", error);
-        std::process::exit(0);
+        std::process::exit(1);
     }
 }

@@ -11,6 +11,12 @@ pub struct ConfigFile {
 
     #[serde(default, with = "humantime_serde::option")]
     pub long_break_duration: Option<Duration>,
+
+    #[serde(default)]
+    pub toggl_api_token: Option<String>,
+
+    #[serde(default)]
+    pub toggl_workspace_id: Option<String>,
 }
 
 impl ConfigFile {
@@ -27,6 +33,8 @@ impl ConfigFile {
             pomodoro_duration: config.pomodoro_duration,
             short_break_duration: config.short_break_duration,
             long_break_duration: config.long_break_duration,
+            toggl_api_token: config.toggl_api_token,
+            toggl_workspace_id: config.toggl_workspace_id,
         }
     }
 }

@@ -1,0 +1,12 @@
+   Compiling oxitime v0.1.0 (/home/iagobozza/Code/Rust/oxitime)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 3.99s
+     Running `target/debug/oxitime --pomodoro-duration 3s start`
+[oxitime::debug] finish() called — kind: Pomodoro, syncer present: true
+[oxitime::debug] syncing pomodoro duration=3s
+[oxitime::debug] TogglSyncer::sync_pomodoro(duration=3s)
+[oxitime::debug] POST https://api.track.toggl.com/api/v9/workspaces/1893258/time_entries
+[oxitime::debug] body: {"description":"Pomodoro","workspace_id":1893258,"duration":3,"start":"2026-06-12T15:18:21.134092798+00:00","created_with":"oxitime"}
+[oxitime::debug] response status: 200 OK
+[oxitime::debug] response body: {"id":4444314766,"workspace_id":1893258,"project_id":null,"task_id":null,"billable":false,"start":"2026-06-12T15:18:21Z","stop":"2026-06-12T15:18:24Z","duration":3,"description":"Pomodoro","tags":null,"tag_ids":null,"duronly":true,"at":"2026-06-12T15:18:24.348139Z","server_deleted_at":null,"user_id":2706417,"uid":2706417,"wid":1893258}
+[oxitime::debug] TogglSyncer::sync_pomodoro result: Ok(())
+[oxitime::debug] sync ok

@@ -14,6 +14,7 @@ use timer::{Timer, TimerKind, TimerMessage};
 
 pub mod config;
 mod timer;
+pub mod toggl;
 
 pub fn run(config: Config) -> Result<()> {
     let (tx, rx) = mpsc::channel::<TimerMessage>();
@@ -35,10 +36,23 @@ pub fn run(config: Config) -> Result<()> {
     Ok(())
 }
 
+use toggl::TogglSyncer;
+
 fn process_command(config: &Config, tx: &Sender<TimerMessage>, rx: mpsc::Receiver<TimerMessage>) {
+    let syncer = config
+        .toggl_api_token
+        .as_ref()
+        .zip(config.toggl_workspace_id.as_ref())
+        .map(|(token, workspace_id)| TogglSyncer::new(token.clone(), workspace_id.clone()));
+
     match config.command {
         TimerCommand::Start => {
-            let mut timer = Timer::new(TimerKind::Pomodoro, config.pomodoro_duration, rx);
+            let mut timer = Timer::new(
+                TimerKind::Pomodoro,
+                config.pomodoro_duration,
+                rx,
+                syncer,
+            );
 
             thread::spawn(move || {
                 timer.run();
@@ -47,7 +61,7 @@ fn process_command(config: &Config, tx: &Sender<TimerMessage>, rx: mpsc::Receive
             let _ = tx.send(TimerMessage::Start);
         }
         TimerCommand::ShortBreak => {
-            let mut timer = Timer::new(TimerKind::ShortBreak, config.short_break_duration, rx);
+            let mut timer = Timer::new(TimerKind::ShortBreak, config.short_break_duration, rx, None);
 
             thread::spawn(move || {
                 timer.run();
@@ -56,7 +70,7 @@ fn process_command(config: &Config, tx: &Sender<TimerMessage>, rx: mpsc::Receive
             let _ = tx.send(TimerMessage::Start);
         }
         TimerCommand::LongBreak => {
-            let mut timer = Timer::new(TimerKind::LongBreak, config.long_break_duration, rx);
+            let mut timer = Timer::new(TimerKind::LongBreak, config.long_break_duration, rx, None);
 
             thread::spawn(move || {
                 timer.run();
