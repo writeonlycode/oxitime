@@ -17,6 +17,9 @@ pub struct ConfigFile {
 
     #[serde(default)]
     pub toggl_workspace_id: Option<String>,
+
+    #[serde(default)]
+    pub description: Option<String>,
 }
 
 impl ConfigFile {
@@ -35,6 +38,7 @@ impl ConfigFile {
             long_break_duration: config.long_break_duration,
             toggl_api_token: config.toggl_api_token,
             toggl_workspace_id: config.toggl_workspace_id,
+            description: config.description,
         }
     }
 }

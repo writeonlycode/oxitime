@@ -23,6 +23,9 @@ pub struct ConfigArgs {
 
     #[arg(long)]
     pub toggl_workspace_id: Option<String>,
+
+    #[arg(long)]
+    pub description: Option<String>,
 }
 
 impl ConfigArgs {

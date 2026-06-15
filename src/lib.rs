@@ -6,6 +6,7 @@ use crossterm::{
     execute,
     terminal::{disable_raw_mode, enable_raw_mode, Clear},
 };
+use thiserror::Error;
 use std::{
     sync::mpsc::{self, Sender},
     thread::{self},
@@ -15,6 +16,14 @@ use timer::{Timer, TimerKind, TimerMessage};
 pub mod config;
 mod timer;
 pub mod toggl;
+
+
+#[derive(Debug, Error)]
+pub enum OxitimeError {
+    /// Error while parsing JSON event data.
+    #[error("Generic error")]
+   Error,
+}
 
 pub fn run(config: Config) -> Result<()> {
     let (tx, rx) = mpsc::channel::<TimerMessage>();
@@ -43,7 +52,13 @@ fn process_command(config: &Config, tx: &Sender<TimerMessage>, rx: mpsc::Receive
         .toggl_api_token
         .as_ref()
         .zip(config.toggl_workspace_id.as_ref())
-        .map(|(token, workspace_id)| TogglSyncer::new(token.clone(), workspace_id.clone()));
+        .map(|(token, workspace_id)| {
+            let description = config
+                .description
+                .clone()
+                .unwrap_or_else(|| "Pomodoro".to_string());
+            TogglSyncer::new(token.clone(), workspace_id.clone(), description)
+        });
 
     match config.command {
         TimerCommand::Start => {

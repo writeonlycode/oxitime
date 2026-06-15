@@ -14,6 +14,7 @@ pub struct Config {
     pub long_break_duration: Duration,
     pub toggl_api_token: Option<String>,
     pub toggl_workspace_id: Option<String>,
+    pub description: Option<String>,
 }
 
 impl Config {
@@ -40,6 +41,7 @@ impl Config {
             ),
             toggl_api_token: args.toggl_api_token.or(config.toggl_api_token),
             toggl_workspace_id: args.toggl_workspace_id.or(config.toggl_workspace_id),
+            description: args.description.or(config.description),
         }
     }
 }

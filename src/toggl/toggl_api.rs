@@ -15,6 +15,7 @@ struct TimeEntry {
 pub fn create_time_entry(
     api_token: &str,
     workspace_id: &str,
+    description: &str,
     duration: Duration,
 ) -> Result<()> {
     let client = Client::new();
@@ -28,7 +29,7 @@ pub fn create_time_entry(
     let start_rfc3339 = start.to_rfc3339();
 
     let entry = TimeEntry {
-        description: "Pomodoro".to_string(),
+        description: description.to_string(),
         workspace_id: ws_id,
         duration: duration.as_secs() as i64,
         start: start_rfc3339,

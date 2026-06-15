@@ -1,6 +1,6 @@
 [package]
 name = "oxitime"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 description = "Oxitime is a fast, minimal, and terminal-native Pomodoro time tracker built with the Rust programming language."
 license = "MIT"
@@ -18,4 +18,5 @@ reqwest = { version = "0.12.15", features = ["blocking", "json"] }
 rodio = "0.20.1"
 serde = "1.0.219"
 serde_json = "1"
+thiserror = "2.0.18"
 toml = "0.8.22"
